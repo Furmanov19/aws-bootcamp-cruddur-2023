@@ -1,6 +1,13 @@
 from datetime import datetime, timedelta, timezone
+from aws_xray_sdk.core import xray_recorder
+
 class HomeActivities:
   def run():
+    segment = xray_recorder.begin_segment('home_activities')
+    dict = {
+      "a":"A"
+    }
+    segment.put_metadata('key', dict, 'namespace')
     now = datetime.now(timezone.utc).astimezone()
     results = [{
       'uuid': '68f126b0-1ceb-4a33-88be-d90fa7109eee',
