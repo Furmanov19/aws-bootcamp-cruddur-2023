@@ -21,6 +21,10 @@ from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExport
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
+import rollbar
+import rollbar.contrib.flask
+from flask import got_request_exception
+
 # from aws_xray_sdk.core import xray_recorder
 # from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
@@ -49,6 +53,28 @@ tracer = trace.get_tracer(__name__)
 
 app = Flask(__name__)
 
+appHasRunBefore:bool = False
+rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
+@app.before_request
+def init_rollbar():
+  global appHasRunBefore
+  if not appHasRunBefore:
+    """init rollbar module"""
+    rollbar.init(
+        # access token
+        rollbar_access_token,
+        # environment name
+        'production',
+        # server root directory, makes tracebacks prettier
+        root=os.path.dirname(os.path.realpath(__file__)),
+        # flask already sets up logging
+        allow_logging_basic_config=False)
+    appHasRunBefore = True
+    
+    # send exceptions from `app` to rollbar, using flask's signal system.
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+
+
 # xray_url = os.getenv("AWS_XRAY_URL")
 # xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
 # XRayMiddleware(app, xray_recorder)
@@ -75,6 +101,11 @@ cors = CORS(
 #     LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
 #     return response
 
+@app.route('/rollbar/test')
+def rollbar_test():
+    rollbar.report_message('Hello World!', 'warning')
+    return "Hello World!"
+    
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
   user_handle  = 'andrewbrown'
