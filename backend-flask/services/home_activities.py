@@ -9,6 +9,12 @@ class HomeActivities:
     #   "a":"A"
     # }
     # segment.put_metadata('key', dict, 'namespace')
+
+    # sub_segment = xray_recorder.begin_subsegment('home_activities_sub')
+    # sub_segment.put_metadata('key', dict, 'namespace')
+
+    # xray_recorder.end_subsegment();
+    
     now = datetime.now(timezone.utc).astimezone()
     results = [{
       'uuid': '68f126b0-1ceb-4a33-88be-d90fa7109eee',
