@@ -18,13 +18,15 @@ export default function SigninPage() {
     setCognitoErrors('')
     event.preventDefault();
     try {
-      Auth.signIn(username, password)
+      Auth.signIn(email, password)
         .then(user => {
+          console.log(user);
           localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
           window.location.href = "/"
         })
         .catch(err => { console.log('Error!', err) });
     } catch (error) {
+
       if (error.code == 'UserNotConfirmedException') {
         window.location.href = "/confirm"
       }
