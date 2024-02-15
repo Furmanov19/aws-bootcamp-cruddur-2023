@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 # from aws_xray_sdk.core import xray_recorder
 
 class HomeActivities:
-  def run():
+  def run(cognito_user_id=None):
     # logger.info("HomeActivities.run()")
     # segment = xray_recorder.begin_segment('home_activities')
     # dict = {
