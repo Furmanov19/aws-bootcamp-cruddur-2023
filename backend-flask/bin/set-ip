@@ -1,0 +1,3 @@
+#! /usr/bin/bash
+
+export CODESPACE_IP=$(curl ifconfig.me)
