@@ -21,4 +21,4 @@ def query_wrap_array(template):
 print("URL++++++++++++++++++");
 print(os.getenv("CONNECTION_URL"));
 connection_url = os.getenv("CONNECTION_URL")
-pool = ConnectionPool("postgresql://postgres:password@db:5432/cruddur")
+pool = ConnectionPool(connection_url)
