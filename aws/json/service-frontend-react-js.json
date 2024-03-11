@@ -1,34 +1,45 @@
 {
-    "cluster": "cruddur",
-    "launchType": "FARGATE",
-    "desiredCount": 1,
-    "enableECSManagedTags": true,
-    "enableExecuteCommand": true,
-    "networkConfiguration": {
-      "awsvpcConfiguration": {
-        "assignPublicIp": "ENABLED",
-        "securityGroups": [
-          "sg-04ca5ebd69e0aec6f"
-        ],
-        "subnets": [
-          "subnet-0462b87709683ccaa",
-          "subnet-066a53dd88d557e05",
-          "subnet-021a6adafb79249e3"
-        ]
-      }
-    },
-    "propagateTags": "SERVICE",
-    "serviceName": "frontend-react-js",
-    "taskDefinition": "frontend-react-js",
-    "serviceConnectConfiguration": {
-      "enabled": true,
-      "namespace": "cruddur",
-      "services": [
-        {
-          "portName": "frontend-react-js",
-          "discoveryName": "frontend-react-js",
-          "clientAliases": [{"port": 3000}]
-        }
+  "cluster": "cruddur",
+  "launchType": "FARGATE",
+  "desiredCount": 1,
+  "enableECSManagedTags": true,
+  "enableExecuteCommand": true,
+  "loadBalancers": [
+    {
+      "targetGroupArn": "arn:aws:elasticloadbalancing:ca-central-1:319989113672:targetgroup/frontent-react-js/54b7b4393f55657b",
+      "containerName": "frontend-react-js",
+      "containerPort": 3000
+    }
+  ],
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "assignPublicIp": "ENABLED",
+      "securityGroups": [
+        "sg-06bdad16ad08a234a"
+      ],
+      "subnets": [
+        "subnet-04a2881f04c161812",
+        "subnet-0058e7691bf4ccf77",
+        "subnet-06d7250552b5b28c6"
       ]
     }
+  },
+  "propagateTags": "SERVICE",
+  "serviceName": "frontend-react-js",
+  "taskDefinition": "frontend-react-js",
+  "serviceConnectConfiguration": {
+    "enabled": true,
+    "namespace": "cruddur",
+    "services": [
+      {
+        "portName": "frontend-react-js",
+        "discoveryName": "frontend-react-js",
+        "clientAliases": [
+          {
+            "port": 3000
+          }
+        ]
+      }
+    ]
   }
+}

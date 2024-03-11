@@ -60,11 +60,11 @@
         },
         {
           "name": "FRONTEND_URL",
-          "value": "*"
+          "value": "https://awstrainee.link"
         },
         {
           "name": "BACKEND_URL",
-          "value": "*"
+          "value": "https://api.awstrainee.link"
         },
         {
           "name": "AWS_DEFAULT_REGION",

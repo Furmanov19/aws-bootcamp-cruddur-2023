@@ -130,3 +130,4 @@ dist
 .pnp.*
 
 frontent-react-js/build/*
+build/*
