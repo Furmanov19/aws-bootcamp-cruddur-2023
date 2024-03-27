@@ -1,0 +1,21 @@
+#! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CFN_PATH="/workspaces/aws-bootcamp-cruddur-2023/aws/cfn/networking/template.yaml"
+
+echo $CFN_PATH
+
+
+BUCKET='cfn-artifacts-ca-central-1'
+REGION='ca-central-1'
+STACK_NAME='CrdNet'
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --s3-prefix networking \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-networking \
+  --capabilities CAPABILITY_NAMED_IAM

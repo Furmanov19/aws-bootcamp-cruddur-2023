@@ -1,0 +1,26 @@
+#! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CFN_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/cluster/template.yaml"
+CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/cluster/config.toml"
+echo $CFN_PATH
+
+cfn-lint $CFN_PATH
+
+BUCKET='cfn-artifacts-ca-central-1'
+REGION='ca-central-1'
+STACK_NAME='CrdCluster'
+PARAMETERS=$(cfn-toml params v2 -t $CONFIG_PATH)
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --s3-prefix cluster \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-cluster \
+  --parameter-overrides \ 
+    CertificateArn='arn:aws:acm:ca-central-1:319989113672:certificate/a68b9141-b253-4e79-88ca-db510184479f' \
+    NetworkingStack='CrdNet'
+  --capabilities CAPABILITY_NAMED_IAM

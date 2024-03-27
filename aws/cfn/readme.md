@@ -1,0 +1,1 @@
+export CFN_BUCKET_NAME=s3://cfn-artifacts-ca-central-1
