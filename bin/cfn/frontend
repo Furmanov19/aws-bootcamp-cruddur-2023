@@ -1,22 +1,22 @@
 #! /usr/bin/env bash
 set -e # stop the execution of the script if it fails
 
-CFN_PATH="/workspaces/aws-bootcamp-cruddur-2023/aws/cfn/cluster/template.yaml"
+CFN_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/frontend/template.yaml"
 echo $CFN_PATH
 
 cfn-lint $CFN_PATH
 
 BUCKET='cfn-artifacts-ca-central-1'
 REGION='ca-central-1'
-STACK_NAME='CrdCluster'
+STACK_NAME='CrdFrontend'
 
 aws cloudformation deploy \
   --stack-name $STACK_NAME \
   --s3-bucket $BUCKET \
-  --s3-prefix cluster \
+  --s3-prefix frontend \
   --region $REGION \
   --template-file "$CFN_PATH" \
   --no-execute-changeset \
-  --tags group=cruddur-cluster \
-  --parameter-overrides CertificateArn='arn:aws:acm:ca-central-1:319989113672:certificate/a68b9141-b253-4e79-88ca-db510184479f' NetworkingStack='CrdNet' \
+  --tags group=cruddur-frontend \
+  --parameter-overrides CertificateArn='arn:aws:acm:ca-central-1:319989113672:certificate/a68b9141-b253-4e79-88ca-db510184479f' RootBucketName='awstrainee.link' \
   --capabilities CAPABILITY_NAMED_IAM
